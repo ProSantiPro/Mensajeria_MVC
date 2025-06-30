@@ -50,12 +50,12 @@ class Controlador_Chat {
         if (isset($_POST['enviar']) && !empty($usuario_seleccionado)) {
             $contenido_mensaje = trim(htmlentities($_POST['msg_contenido']));
             
-            // Debug: Verificar datos antes de insertar
+            //  Verificar datos antes de insertar
             error_log("Intentando enviar mensaje de $usuario_logeado a $usuario_seleccionado: $contenido_mensaje");
             
             if ($usuario_logeado != $usuario_seleccionado && !empty($contenido_mensaje) && strlen($contenido_mensaje) <= 250) {
                 if ($this->modelo_chat->Insertar_Mensaje($usuario_logeado, $usuario_seleccionado, $contenido_mensaje)) {
-                    // Debug: Confirmar inserción exitosa
+                    
                     error_log("Mensaje insertado correctamente, redirigiendo...");
                     header("Location: ?correo_usuario=$correo_usuario_actual");
                     exit();
