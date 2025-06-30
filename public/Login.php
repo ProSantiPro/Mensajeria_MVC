@@ -1,0 +1,66 @@
+<?php
+session_start();
+
+if(isset($_SESSION['usuario'])) {
+    header("Location: index.php");
+    exit();
+}
+$error = isset($_GET['error']) ? "Credenciales incorrectas" : "";
+
+// Profe, El usuario que esta registrado por defecto es Admin01, la clave es Administrador.
+?>
+
+
+<!DOCTYPE html>
+<html lang="es">
+     <link rel="stylesheet" href="../public/LosCSS/EstilosLogin.css"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+   
+</head>
+<body>
+    <img src="../app/vista/Imagenes/descarga.png" alt="Logo de la empresa" class="logo">
+
+    <div class="left-spacer">
+    </div>
+    <div class="right-side-wrapper">
+        <div class="login-container">
+            <h2>Iniciar Sesión</h2>
+            
+            <?php if(isset($error) && $error): ?>
+                <div class="error-message">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
+            
+            <form method="post" action="../app/Controlador/Controlador_Login.php">
+                <div class="form-group">
+                    <label for="usuario">Usuario:</label>
+                    <input 
+                        type="text" 
+                        id="usuario" 
+                        name="usuario" 
+                        required 
+                        placeholder="Ingrese su usuario"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        placeholder="Ingrese su contraseña"
+                    >
+                </div>
+                
+                <button type="submit" class="btn-login">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
