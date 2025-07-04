@@ -65,9 +65,8 @@ class Modelo_Chat {
             return false;
         }
 
-        $stmt = $this->conexion->prepare("INSERT INTO chat_usuarios 
-            (sender_usuario, receiver_usuario, msg_contenido, msg_fecha) 
-            VALUES (?, ?, ?, NOW())");
+         $stmt = $this->conexion->prepare("INSERT INTO chat_usuarios (sender_usuario, receiver_usuario, msg_contenido, msg_status, 
+         msg_fecha) VALUES (?, ?, ?, 'unread', NOW())");
         
         if (!$stmt) {
             error_log("Error preparando consulta: " . $this->conexion->error);
@@ -85,6 +84,26 @@ class Modelo_Chat {
         return true;
     }
 
-    
+    public function Obtener_Mensajes_No_Leidos($usuario_destino){
+        $stmt = $this->conexion->prepare("SELECT COUNT(*) as total FROM chat_usuarios
+        WHERE receiver_usuario = ? AND msg_status = 'unread' ");
+        $stmt->bind_param("s", $usuario_destino);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $row = $resultado->fetch_assoc();
+        return $row['total'] ?? 0;
+    }
+
+    public function Obtener_Ultimo_Mensaje($usuario1, $usuario2){
+        $stmt = $this->conexion->prepare("SELECT * FROM chat_usuarios WHERE(sender_usuario = ?
+        AND receiver_usuario = ?) OR (sender_usuario = ? AND receiver_usuario = ?)
+        ORDER BY msg_fecha DESC LIMIT 1");
+        $stmt->bind_param("ssss", $usuario1, $usuario2, $usuario2, $usuario1);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        return $resultado->fetch_assoc();
+    }
+
+
 }
 ?>

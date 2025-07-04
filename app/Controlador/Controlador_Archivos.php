@@ -3,6 +3,7 @@ require_once(__DIR__ . '/../Modelo/Modelo_Archivos.php');
 
 class Controlador_Archivos {
     private $modelo;
+    private $conexion;
 
     public function __construct() {
         require_once(__DIR__ . '/../../config/session.php');
@@ -11,6 +12,10 @@ class Controlador_Archivos {
             header("Location: /Mensajeria_MVC/public/Login.php");
             exit();
         }
+
+        require_once(__DIR__ . '/../../config/Database.php');
+        $database = new DataBase();
+        $this->conexion = $database->Conectar_db();
         
         $this->modelo = new Modelo_Archivos();
     }
@@ -85,31 +90,53 @@ class Controlador_Archivos {
     }
 
     public function eliminar($id) {
-        if ($this->modelo->Eliminar_Archivo($id, $_SESSION['usuario']['usuario'])) {
-            header("Location: archivos.php?success=2");
-            exit();
-        } else {
-            header("Location: archivos.php?error=2");
-            exit();
+        $usuario_actual = $_SESSION['usuario']['usuario_usuario'] ?? '';
+        $archivo = $this->modelo->Obtener_Archivo($id, $usuario_actual);
+        
+        if ($archivo && $archivo['sender_usuario'] == $usuario_actual) {
+            $ruta_completa = __DIR__ . '/../../public/archivos_upload/' . 
+                            $archivo['receiver_usuario'] . '/' . $archivo['ruta_archivo'];
+            
+            if (file_exists($ruta_completa)) {
+                unlink($ruta_completa);
+            }
+            
+            $stmt = $this->conexion->prepare("DELETE FROM archivos_chat WHERE id = ? AND sender_usuario = ?");
+            $stmt->bind_param("is", $id, $usuario_actual);
+            
+            if ($stmt->execute()) {
+                header("Location: archivos.php?success=2");
+                exit();
+            }
         }
+        
+        header("Location: archivos.php?error=2");
+        exit();
     }
 
     public function descargar($id) {
-        $archivo = $this->modelo->Obtener_Archivo($id, $_SESSION['usuario']['usuario']);
-        if ($archivo && file_exists(__DIR__ . '/../../public/archivos_upload/' . $archivo['ruta_archivo'])) {
+        $usuario_actual = $_SESSION['usuario']['usuario_usuario'] ?? '';
+        $archivo = $this->modelo->Obtener_Archivo($id, $usuario_actual);
+
+        if ($archivo) {
+        $ruta_completa = __DIR__ . '/../../public/archivos_upload/' . 
+        $archivo['receiver_usuario'] . '/' . $archivo['ruta_archivo'];
+        
+        if (file_exists($ruta_completa)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
             header('Content-Disposition: attachment; filename="'.basename($archivo['sender_nombre_original']).'"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
-            header('Content-Length: ' . filesize(__DIR__ . '/../../public/archivos_upload/' . $archivo['ruta_archivo']));
-            readfile(__DIR__ . '/../../public/archivos_upload/' . $archivo['ruta_archivo']);
+            header('Content-Length: ' . filesize($ruta_completa));
+            readfile($ruta_completa);
             exit();
-        } else {
-            header("Location: archivos.php?error=3");
-            exit();
+            }
         }
+    
+        header("Location: archivos.php?error=3");
+        exit();
     }
 
     private function Cargar_Vista($vista, $datos = []) {

@@ -14,6 +14,7 @@ $error = isset($_GET['error']) ? "Credenciales incorrectas" : "";
 <!DOCTYPE html>
 <html lang="es">
      <link rel="stylesheet" href="../public/LosCSS/EstilosLogin.css"> 
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +22,11 @@ $error = isset($_GET['error']) ? "Credenciales incorrectas" : "";
    
 </head>
 <body>
+
+    <a href="../index.html" class="btn-volver-inicio">
+        <i class="fas fa-arrow-left"></i> Volver al Inicio
+    </a>
+
     <img src="../app/vista/Imagenes/descarga.png" alt="Logo de la empresa" class="logo">
 
     <div class="left-spacer">

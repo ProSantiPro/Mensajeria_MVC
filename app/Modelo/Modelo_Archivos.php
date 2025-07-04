@@ -11,15 +11,23 @@ class Modelo_Archivos {
 
     public function Subir_Archivo($sender, $receiver, $archivo){
         $directorio = __DIR__ . '/../../public/archivos_upload/';
+        
         if (!is_dir($directorio)) {
             if (!mkdir($directorio, 0777, true)) {
                 throw new Exception("No se pudo crear el directorio de archivos");
             }
         }
+        $directorio_usuario = $directorio . $receiver . '/';
+        if(!is_dir($directorio_usuario)){
+            if(!mkdir($directorio_usuario, 0777, true)){
+                throw new Exception("No se pudo crear el directorio del usuario");
+            }
+        }
+        
         $nombre_original = basename($archivo['name']);
         $extension = pathinfo($nombre_original, PATHINFO_EXTENSION);
         $nombre_unico = uniqid() . '.' . $extension;
-        $ruta_destino = $directorio . $nombre_unico;
+        $ruta_destino = $directorio_usuario . $nombre_unico;
 
         $extensiones_permitidas = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png', 'gif', 'zip', 'rar'];
         if (!in_array(strtolower($extension), $extensiones_permitidas)) {
@@ -76,7 +84,8 @@ class Modelo_Archivos {
         $archivo = $resultado->fetch_assoc();
 
         if ($archivo) {
-            $archivo['ruta'] = __DIR__ . '/../../public/archivos_upload/' . $archivo['ruta_archivo'];
+            $archivo['ruta'] = __DIR__ . '/../../public/archivos_upload/' . 
+                            $archivo['receiver_usuario'] . '/' . $archivo['ruta_archivo'];
         }
         return $archivo;
     }

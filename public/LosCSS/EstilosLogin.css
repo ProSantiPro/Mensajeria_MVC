@@ -141,3 +141,30 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(133, 159, 192, 0.75);
         }
+        .btn-volver-inicio {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background-color: #6aa8e2;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-volver-inicio:hover {
+            background-color: #4a8ac8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .btn-volver-inicio i {
+            font-size: 12px;
+        }

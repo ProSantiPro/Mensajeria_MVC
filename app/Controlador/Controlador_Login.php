@@ -75,6 +75,7 @@ class Controlador_Login {
                     'usuario_id' => $datosUsuario['usuario_id'],
                     'usuario_usuario' => $datosUsuario['usuario_usuario'],
                     'usuario_email' => $datosUsuario['usuario_email'],
+                    'usuario_foto' => $datosUsuario['usuario_foto'],
                     'genero' => $datosUsuario['genero'] ?? '',
                     'login_status' => 'Online'
                 ];

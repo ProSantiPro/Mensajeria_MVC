@@ -113,7 +113,7 @@ require_once(__DIR__ . '/../../Modelo/Modelo_Archivos.php');
                                 <thead>
                                     <tr>
                                         <th>Nombre del Archivo</th>
-                                        <th>Descripcion</th>
+                                        <th>Descripción</th>
                                         <th>Tamaño</th>
                                         <th>Fecha</th>
                                         <th>Acciones</th>
@@ -123,9 +123,16 @@ require_once(__DIR__ . '/../../Modelo/Modelo_Archivos.php');
                                     <?php foreach($archivos as $archivo): ?>
                                         <tr>
                                             <td><?php echo htmlspecialchars($archivo['sender_nombre_original']); ?></td>
-                                            <td><?php echo htmlspecialchars($archivo['descripcion_archivo']); ?></td>
-                                            <td><?php echo (new Modelo_Archivos())->Formatear_Tamano($archivo['tamano_archivo']);  ?></td>
-                                            <td><?php echo date('d/m/Y H:i', strtotime($archivo['fecha_subida'])); ?></td>
+                                            <td>
+                                                <?php 
+                                                if ($archivo['sender_usuario'] == $_SESSION['usuario']['usuario_usuario']) {
+                                                    echo "Enviado a " . htmlspecialchars($archivo['receiver_usuario']);
+                                                } else {
+                                                    echo "Recibido de " . htmlspecialchars($archivo['sender_usuario']);
+                                                }
+                                                ?>
+                                            </td>
+                                            <td><?php echo (new Modelo_Archivos())->Formatear_Tamano($archivo['tamano_archivo']); ?></td>
                                             <td><?php echo date('d/m/Y H:i', strtotime($archivo['fecha_subida'])); ?></td>
                                             <td>
                                                 <a href="archivos.php?action=descargar&id=<?php echo $archivo['id']; ?>" class="btn-descargar">
@@ -141,7 +148,7 @@ require_once(__DIR__ . '/../../Modelo/Modelo_Archivos.php');
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
-                            </table>    
+                            </table>       
                         <?php endif; ?>
                     </div>
                 </div>
