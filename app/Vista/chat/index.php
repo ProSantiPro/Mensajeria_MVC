@@ -18,7 +18,8 @@ $foto_usuario = !empty($datos_usuario['usuario_foto']) ?
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
+    <title>H-Zone</title>
+    <link rel="icon" href="/Mensajeria_MVC/logo.png">
     <link rel="stylesheet" href="/Mensajeria_MVC/public/LosCSS/stilochat.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>

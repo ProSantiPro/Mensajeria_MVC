@@ -17,6 +17,7 @@ require_once(__DIR__ . '/../../Modelo/Modelo_Archivos.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Mensajeria_MVC/public/LosCSS/estilos_archivos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="/Mensajeria_MVC/logo.png">
     <title>Administrar Archivos</title>
 </head>
 <body>

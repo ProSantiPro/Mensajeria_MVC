@@ -36,6 +36,7 @@ $ruta_base_fotos = $datos['ruta_base_fotos'] ?? '/Mensajeria_MVC/CrudAdmin/app/v
     <title>Configuración de Notificaciones</title>
     <link rel="stylesheet" href="/Mensajeria_MVC/public/LosCSS/estilos_configuracion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="/Mensajeria_MVC/logo.png">
 </head>
 <body class="contendedor">
     <div class="configuracion-container">
