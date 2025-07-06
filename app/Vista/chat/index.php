@@ -3,7 +3,7 @@ $archivos_chat = $archivos_chat ?? [];
 $usuario_seleccionado = $usuario_seleccionado ?? null;
 $mensajes_chat = $mensajes_chat ?? [];
 $saludo = $saludo ?? 'Bienvenido/a';
-$ruta_base_fotos = '/Mensajeria_MVC/CrudAdmin/app/views/fotos/';
+$ruta_base_fotos = 'http://localhost/CrudAdmin/app/views/fotos/';
 
 $modeloUsuario = new Modelo_Usuario();
 $datos_usuario = $modeloUsuario->Obtener_Datos_Usuario($_SESSION['usuario']['usuario_usuario']);
@@ -246,7 +246,7 @@ $foto_usuario = !empty($datos_usuario['usuario_foto']) ?
             if (borradorTexto) {
                 input.value = borradorTexto.textContent;
                 input.focus();
-                eliminarBorrador(); // Eliminar el borrador al editarlo
+              
             }
         }
 
@@ -311,14 +311,19 @@ $foto_usuario = !empty($datos_usuario['usuario_foto']) ?
             });
         }
 
-        // Cargar borrador al iniciar
-        if (currentChat && <?php echo isset($_SESSION['borradores'][$usuario_seleccionado]) ? 'true' : 'false'; ?>) {
-            const borrador = <?php echo isset($_SESSION['borradores'][$usuario_seleccionado]) ? 
-                json_encode($_SESSION['borradores'][$usuario_seleccionado]) : 'null'; ?>;
-            if (borrador) {
-                actualizarVistaBorrador(borrador);
-            }
-        }
+        <?php if (!empty($usuario_seleccionado)): ?>
+            setInterval(function() {
+                fetch('obtener_mensajes.php?usuario_seleccionado=<?php echo $usuario_seleccionado; ?>')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.nuevosMensajes) {
+                            // Recargar la página solo si hay mensajes nuevos
+                            location.reload();
+                        }
+                    })
+                    .catch(error => console.error("Error al obtener mensajes:", error));
+            }, 3000); // Consulta cada 3 segundos
+        <?php endif; ?>
     </script>       
     
 </body>

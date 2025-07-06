@@ -1,7 +1,7 @@
 <?php
 if (!empty($usuarios_totales)) {
     $usuarios_mostrados = [];
-    $ruta_base_fotos = '/Mensajeria_MVC/CrudAdmin/app/views/fotos/';
+    $ruta_base_fotos = 'http://localhost/CrudAdmin/app/views/fotos/';
     $modeloUsuario = new Modelo_Usuario();
 
     foreach ($usuarios_totales as $usuario) {

@@ -115,7 +115,12 @@ class Modelo_Usuario {
     }
 
     private function buscarFotoUsuario($usuario){
-        $ruta_fotos = __DIR__ . '/../../../CrudAdmin/app/views/fotos/';
+        $ruta_fotos = 'C:/xampp/htdocs/CrudAdmin/app/views/fotos/';
+        
+        if (!is_dir($ruta_fotos)) {
+            error_log("La carpeta de fotos no existe: ".$ruta_fotos);
+            return null;
+        }
         $patron = $usuario . '_*.*';
         $archivos = glob($ruta_fotos . $patron);
         
