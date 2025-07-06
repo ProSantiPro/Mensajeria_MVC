@@ -71,7 +71,8 @@ class Controlador_Archivos {
                     $_FILES['archivo']
                 );
                 
-                if ($resultado) {
+                 if ($resultado) {
+                    $this->notificarNuevoArchivo($receiver);
                     header("Location: archivos.php?success=1");
                     exit();
                 } else {
@@ -87,6 +88,7 @@ class Controlador_Archivos {
             header("Location: archivos.php?error=8");
             exit();
         }
+        
     }
 
     public function eliminar($id) {
@@ -142,6 +144,10 @@ class Controlador_Archivos {
     private function Cargar_Vista($vista, $datos = []) {
         extract($datos);
         require_once(__DIR__ . "/../Vista/archivos/{$vista}.php");
+    }
+
+    private function notificarNuevoArchivo($receiver) {
+        error_log("Nuevo archivo enviado a: " . $receiver);
     }
 }
 ?>

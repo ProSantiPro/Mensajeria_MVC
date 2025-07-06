@@ -113,6 +113,7 @@ class Modelo_Usuario {
         
         return false;
     }
+    
 
     private function buscarFotoUsuario($usuario){
         $ruta_fotos = 'C:/xampp/htdocs/CrudAdmin/app/views/fotos/';

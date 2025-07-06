@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 if(isset($_SESSION['usuario'])) {
     header("Location: index.php");
@@ -52,6 +51,7 @@ $error = isset($_GET['error']) ? "Credenciales incorrectas" : "";
                         name="usuario" 
                         required 
                         placeholder="Ingrese su usuario"
+                        autocomplete=off
                     >
                 </div>
                 

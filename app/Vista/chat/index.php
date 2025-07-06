@@ -316,13 +316,12 @@ $foto_usuario = !empty($datos_usuario['usuario_foto']) ?
                 fetch('obtener_mensajes.php?usuario_seleccionado=<?php echo $usuario_seleccionado; ?>')
                     .then(response => response.json())
                     .then(data => {
-                        if (data.nuevosMensajes) {
-                            // Recargar la página solo si hay mensajes nuevos
+                        if (data.nuevosMensajes || data.nuevosArchivos || data.estadoCambiado) {
                             location.reload();
                         }
                     })
-                    .catch(error => console.error("Error al obtener mensajes:", error));
-            }, 3000); // Consulta cada 3 segundos
+                    .catch(error => console.error("Error al obtener actualizaciones:", error));
+            }, 3000); // Verificar cada 3 segundos
         <?php endif; ?>
     </script>       
     

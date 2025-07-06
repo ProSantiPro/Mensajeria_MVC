@@ -161,7 +161,7 @@ $ruta_base_fotos = $datos['ruta_base_fotos'] ?? '/Mensajeria_MVC/CrudAdmin/app/v
                 });
             }
             
-            // Ocultar automáticamente las alertas después de 3 segundos
+            // Ocultar las alertas después de 3 segundos
             const alert = document.querySelector('.alert');
             if (alert) {
                 setTimeout(() => {

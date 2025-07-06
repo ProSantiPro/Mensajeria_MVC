@@ -57,7 +57,7 @@ class Modelo_Chat {
     }
 
     public function Insertar_Mensaje($sender, $receiver, $content) {
-        // Debug: Verificar parámetros recibidos
+        //  Verificar parámetros recibidos
         error_log("Intentando insertar mensaje - De: $sender, Para: $receiver, Contenido: $content");
         
         if ($sender == $receiver) {
@@ -103,7 +103,14 @@ class Modelo_Chat {
         $resultado = $stmt->get_result();
         return $resultado->fetch_assoc();
     }
-
+    public function Obtener_Estado_Usuario($usuario) {
+        $stmt = $this->conexion->prepare("SELECT login_status FROM usuarios WHERE usuario_usuario = ?");
+        $stmt->bind_param("s", $usuario);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $fila = $resultado->fetch_assoc();
+        return $fila['login_status'] ?? 'logout';
+    }
 
 }
 ?>
