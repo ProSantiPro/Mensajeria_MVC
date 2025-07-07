@@ -63,7 +63,7 @@ class EmailNotificaciones {
             ";
             
             $this->mailer->Body = $mensajeHTML;
-            $this->mailer->AltBody = "Hola $nombre_destinatario,\n\nHas recibido un nuevo mensaje de $remitente:\n\n$contenido_mensaje\n\nPuedes responder en: http://tudominio.com/Mensajeria_MVC/public/index.php";
+            $this->mailer->AltBody = "Hola $nombre_destinatario,\n\nHas recibido un nuevo mensaje de $remitente:\n\n$contenido_mensaje\n\nPuedes responder en: http://localhost/Mensajeria_MVC/public/index.php";
             
             return $this->mailer->send();
         } catch (Exception $e) {

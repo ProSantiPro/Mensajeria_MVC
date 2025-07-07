@@ -4,6 +4,11 @@ if(isset($_SESSION['usuario'])) {
     header("Location: index.php");
     exit();
 }
+$errorMessages = [
+    1 => "Usuario o contraseña incorrectos",
+    2 => "Error en el sistema. Por favor, intente más tarde"
+];
+
 $error = isset($_GET['error']) ? "Credenciales incorrectas" : "";
 
 // Profe, El usuario que esta registrado por defecto es Admin01, la clave es Administrador.
@@ -53,8 +58,9 @@ $error = isset($_GET['error']) ? "Credenciales incorrectas" : "";
                         placeholder="Ingrese su usuario"
                         autocomplete=off
                     >
+                    
                 </div>
-                
+                   
                 <div class="form-group">
                     <label for="password">Contraseña:</label>
                     <input 
@@ -64,11 +70,31 @@ $error = isset($_GET['error']) ? "Credenciales incorrectas" : "";
                         required 
                         placeholder="Ingrese su contraseña"
                     >
+                    <button type="button" class="toggle-password" aria-label="Mostrar contraseña">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
                 
                 <button type="submit" class="btn-login">Iniciar Sesión</button>
             </form>
         </div>
     </div>
+    <script>
+        
+        document.querySelector('.toggle-password').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+                this.setAttribute('aria-label', 'Ocultar contraseña');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                this.setAttribute('aria-label', 'Mostrar contraseña');
+            }
+        });
+    </script>
 </body>
 </html>

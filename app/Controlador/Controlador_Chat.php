@@ -128,12 +128,17 @@ class Controlador_Chat {
             }
             
             $emailNotificaciones = new EmailNotificaciones();
-            $emailNotificaciones->enviarNotificacionMensaje(
+            $resultado = $emailNotificaciones->enviarNotificacionMensaje(
                 $destinatario['usuario_email'],
                 $destinatario['usuario_usuario'],
                 $sender,
                 $content
             );
+            if ($resultado) {
+                error_log("Notificación enviada correctamente a $receiver");
+            } else {
+                error_log("Error al enviar notificación a $receiver");
+            }
             
         } catch (Exception $e) {
             error_log("Error al procesar notificación por email: " . $e->getMessage());

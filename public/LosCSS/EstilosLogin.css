@@ -83,6 +83,7 @@
 
         .form-group {
             margin-bottom: 1.8rem;
+            position: relative;
         }
 
         .form-group label {
@@ -167,4 +168,55 @@
         
         .btn-volver-inicio i {
             font-size: 12px;
+        }
+        .error-message {
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+       .password-container {
+            position: relative;
+            margin-bottom: 1.8rem;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-input-wrapper input {
+            padding-right: 40px; /* Espacio para el botón */
+            width: 100%;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #859FC0;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: #CEE0F4;
+        }
+
+        .toggle-password:focus {
+            outline: none;
+            color: #315381;
         }

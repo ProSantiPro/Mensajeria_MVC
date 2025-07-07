@@ -317,11 +317,12 @@ $foto_usuario = !empty($datos_usuario['usuario_foto']) ?
                     .then(response => response.json())
                     .then(data => {
                         if (data.nuevosMensajes || data.nuevosArchivos || data.estadoCambiado) {
+                            // Recargar la página si hay cambios
                             location.reload();
                         }
                     })
                     .catch(error => console.error("Error al obtener actualizaciones:", error));
-            }, 3000); // Verificar cada 3 segundos
+            }, 3000); 
         <?php endif; ?>
     </script>       
     

@@ -23,14 +23,14 @@ class Controlador_Login {
                 header("Location: ../public/Login.php?error=1");
                 exit();
             }
-
+            
             // Obtener usuario de la base de datos
             $stmt = $this->conexion->prepare("SELECT usuario_id, usuario_usuario, usuario_clave FROM usuario WHERE usuario_usuario = ? LIMIT 1");
             $stmt->bind_param("s", $usuario);
             
             if (!$stmt->execute()) {
                 error_log("Error al ejecutar la consulta: " . $stmt->error);
-                header("Location: ../public/Login.php?error=2");
+                header("Location: ../../public/Login.php?error=2");
                 exit();
             }
 
@@ -38,7 +38,7 @@ class Controlador_Login {
             
             // Verificar si el usuario existe
             if ($resultado->num_rows === 0) {
-                header("Location: ../public/Login.php?error=1");
+                header("Location: ../../public/Login.php?error=1");
                 exit();
             }
 
