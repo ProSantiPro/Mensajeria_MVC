@@ -25,7 +25,7 @@ if (!is_array($preferencias['contactos_notificar'])) {
 
 $usuarios = isset($datos['usuarios']) && is_array($datos['usuarios']) ? $datos['usuarios'] : [];
 $usuario_actual = $datos['usuario_actual'] ?? '';
-$ruta_base_fotos = $datos['ruta_base_fotos'] ?? '/Mensajeria_MVC/CrudAdmin/app/views/fotos/';
+$ruta_base_fotos = 'http://localhost/CrudAdmin/app/views/fotos/'; 
 ?>
 
 <!DOCTYPE html>
