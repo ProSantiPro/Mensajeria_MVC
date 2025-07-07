@@ -22,6 +22,7 @@
       <a href="#contact">Contacto</a>
       <a href="public/Login.php">Mensajeria</a>
       <a href="http://localhost/CrudAdmin/login/">Gestión de Usuarios</a>
+      <a href="#" id="manualBtn">Manual de Usuario</a>
     </nav>
   </header>
 
@@ -30,6 +31,14 @@
     <!-- Equipo numero 5 de pasantias tempranas de 3er semestre Seccion A -->
     <!-- Santiago Rodríguez, Sarai Leon, Luis Cala -->
     <!-- Primera Sección -->
+
+    <div id="manualModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <img src="H-ZONE MANUAL DE USUARIO.png" alt="Manual de Usuario H-ZONE" class="manual-img">
+      </div>
+    </div>
+
     <section id="about" class="section1">
       <img src="logo.png" alt="logo" class="logo">
       <div class="container">
@@ -102,5 +111,24 @@
     &copy; 2025 H-zone. Todos los derechos reservados.
   </footer>
 </body>
+  <script>
+      const modal = document.getElementById("manualModal");
+      const btn = document.getElementById("manualBtn");
+      const span = document.getElementsByClassName("close")[0];
 
+      btn.onclick = function(e) {
+        e.preventDefault();
+        modal.style.display = "block";
+      }
+
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+  </script>
 </html>
