@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . '/../Modelo/Modelo_Archivos.php');
-
+require_once(__DIR__ . '/../Librerias/Email_Notificaciones.php');
+require_once(__DIR__ . '/../Modelo/Modelo_Usuario.php');
 class Controlador_Archivos {
     private $modelo;
     private $conexion;
@@ -146,8 +147,59 @@ class Controlador_Archivos {
         require_once(__DIR__ . "/../Vista/archivos/{$vista}.php");
     }
 
-    private function notificarNuevoArchivo($receiver) {
-        error_log("Nuevo archivo enviado a: " . $receiver);
+   private function notificarNuevoArchivo($receiver) {
+        try {
+            // Obtener datos del destinatario
+            $modeloUsuario = new Modelo_Usuario();
+            $destinatario = $modeloUsuario->Obtener_Datos_Usuario($receiver);
+            
+            // Verificar si el usuario quiere notificaciones
+            $preferencias = $modeloUsuario->Obtener_Preferencias_Notificaciones($receiver);
+            
+            if (!$preferencias['notificaciones_email']) {
+                error_log("Usuario $receiver tiene notificaciones desactivadas");
+                return;
+            }
+            
+            // Verificar si el remitente está en la lista de contactos permitidos
+            $sender = $_SESSION['usuario']['usuario_usuario'];
+            if (!empty($preferencias['contactos_notificar']) && 
+                !in_array($sender, $preferencias['contactos_notificar'])) {
+                error_log("Usuario $receiver no tiene notificaciones habilitadas para $sender");
+                return;
+            }
+            
+            if (empty($destinatario['usuario_email'])) {
+                error_log("El usuario $receiver no tiene email configurado");
+                return;
+            }
+            
+            // Obtener el último archivo subido (asumiendo que es el que acaba de subirse)
+            $archivos = $this->modelo->Obtener_Archivos_Usuario($sender);
+            if (empty($archivos)) {
+                error_log("No se encontró el archivo recién subido");
+                return;
+            }
+            
+            $ultimoArchivo = $archivos[0]; // El más reciente es el primero
+            
+            // Enviar notificación
+            $emailNotificaciones = new EmailNotificaciones();
+            $resultado = $emailNotificaciones->enviarNotificacionArchivo(
+                $destinatario['usuario_email'],
+                $destinatario['usuario_usuario'],
+                $sender,
+                $ultimoArchivo['sender_nombre_original']
+            );
+            
+            if ($resultado) {
+                error_log("Notificación de archivo enviada correctamente a $receiver");
+            } else {
+                error_log("Error al enviar notificación de archivo a $receiver");
+            }
+        } catch (Exception $e) {
+            error_log("Error en notificarNuevoArchivo: " . $e->getMessage());
+        }
     }
 }
 ?>

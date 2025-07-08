@@ -6,10 +6,15 @@ if(isset($_SESSION['usuario'])) {
 }
 $errorMessages = [
     1 => "Usuario o contraseña incorrectos",
-    2 => "Error en el sistema. Por favor, intente más tarde"
+    2 => "Error en el sistema. Por favor, intente más tarde",
+    3 => "No puedes iniciar sesión sin un correo electrónico registrado"
 ];
 
-$error = isset($_GET['error']) ? "Credenciales incorrectas" : "";
+$error = "";
+if (isset($_GET['error'])) {
+    $errorCode = (int)$_GET['error']; // Convertir a entero para seguridad
+    $error = $errorMessages[$errorCode] ?? "Error desconocido";
+}
 
 // Profe, El usuario que esta registrado por defecto es Admin01, la clave es Administrador.
 ?>

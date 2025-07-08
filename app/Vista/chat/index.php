@@ -322,7 +322,7 @@ $foto_usuario = !empty($datos_usuario['usuario_foto']) ?
                         }
                     })
                     .catch(error => console.error("Error al obtener actualizaciones:", error));
-            }, 3000); 
+            }, 5000); 
         <?php endif; ?>
     </script>       
     

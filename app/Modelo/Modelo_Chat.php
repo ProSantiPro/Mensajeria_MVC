@@ -56,8 +56,8 @@ class Modelo_Chat {
         return $stmt->execute();
     }
 
+
     public function Insertar_Mensaje($sender, $receiver, $content) {
-        //  Verificar parámetros recibidos
         error_log("Intentando insertar mensaje - De: $sender, Para: $receiver, Contenido: $content");
         
         if ($sender == $receiver) {
@@ -65,8 +65,8 @@ class Modelo_Chat {
             return false;
         }
 
-         $stmt = $this->conexion->prepare("INSERT INTO chat_usuarios (sender_usuario, receiver_usuario, msg_contenido, msg_status, 
-         msg_fecha) VALUES (?, ?, ?, 'unread', NOW())");
+        $stmt = $this->conexion->prepare("INSERT INTO chat_usuarios (sender_usuario, receiver_usuario, msg_contenido, msg_status, 
+        msg_fecha) VALUES (?, ?, ?, 'unread', NOW())");
         
         if (!$stmt) {
             error_log("Error preparando consulta: " . $this->conexion->error);
@@ -80,8 +80,14 @@ class Modelo_Chat {
             return false;
         }
         
-        error_log("Mensaje insertado correctamente");
-        return true;
+        if ($stmt->affected_rows > 0) {
+            error_log("Mensaje insertado correctamente, enviando notificación si aplica");
+            $this->enviarNotificacionSiAplica($sender, $receiver, $content);
+            return true;
+        }
+        
+        error_log("No se insertó ningún mensaje (affected_rows = 0)");
+        return false;
     }
 
     public function Obtener_Mensajes_No_Leidos($usuario_destino){
@@ -112,5 +118,52 @@ class Modelo_Chat {
         return $fila['login_status'] ?? 'logout';
     }
 
+    private function enviarNotificacionSiAplica($sender, $receiver, $content) {
+        try {
+            require_once(__DIR__ . '/../../config/EmailConfig.php');
+            require_once(__DIR__ . '/../Librerias/Email_Notificaciones.php');
+            require_once(__DIR__ . '/../Modelo/Modelo_Usuario.php');
+            
+            $modeloUsuario = new Modelo_Usuario();
+            
+            // 1. Verificar si el receptor quiere notificaciones
+            $preferencias = $modeloUsuario->Obtener_Preferencias_Notificaciones($receiver);
+            
+            if (!$preferencias['notificaciones_email']) {
+                error_log("Usuario $receiver tiene notificaciones por email desactivadas");
+                return;
+            }
+            
+            // 2. Verificar si el sender está en la lista de contactos para notificar
+            if (!empty($preferencias['contactos_notificar']) && 
+                !in_array($sender, $preferencias['contactos_notificar'])) {
+                error_log("Usuario $receiver no tiene habilitadas notificaciones para $sender");
+                return;
+            }
+            
+            // 3. Obtener datos del destinatario
+            $destinatario = $modeloUsuario->Obtener_Datos_Usuario($receiver);
+            if (empty($destinatario['usuario_email'])) {
+                error_log("Usuario $receiver no tiene email configurado");
+                return;
+            }
+            
+            // 4. Enviar notificación
+            $emailNotificaciones = new EmailNotificaciones();
+            $resultado = $emailNotificaciones->enviarNotificacionMensaje(
+                $destinatario['usuario_email'],
+                $destinatario['usuario_usuario'],
+                $sender,
+                $content
+            );
+            
+            if ($resultado) {
+                error_log("Notificación enviada exitosamente a $receiver");
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error en el proceso de notificación: " . $e->getMessage());
+        }
+    }
 }
 ?>

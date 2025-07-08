@@ -69,7 +69,12 @@ class Controlador_Login {
                 
                 // Obtener datos completos del usuario
                 $datosUsuario = $this->modelo->Obtener_Datos_Usuario($usuario);
-                
+
+                if (empty($datosUsuario['usuario_email'])) {
+                    header("Location: ../../public/Login.php?error=3");
+                    exit();
+                }
+                            
                 // Establecer datos de sesión
                 $_SESSION['usuario'] = [
                     'usuario_id' => $datosUsuario['usuario_id'],
